@@ -74,7 +74,21 @@ export default {
       })
   },
   beforeRouteUpdate(routeTo) {
-    return EventService.getEvents(3, parseInt(routeTo.query.page) || 1)
+    var queryFunction
+    if (this.keyword == null || this.keyword === '') {
+      queryFunction = EventService.getEvents(
+        3,
+        parseInt(routeTo.query.page) || 1
+      )
+    } else {
+      queryFunction = EventService.getEventByKeyword(
+        this.keyword,
+        3,
+        parseInt(routeTo.query.page) || 1
+      )
+    }
+
+    queryFunction
       .then((response) => {
         this.events = response.data // <---
         this.totalEvents = response.headers['x-total-count'] // <---
@@ -89,7 +103,7 @@ export default {
       if (this.keyword === '') {
         queryFunction = EventService.getEvents(3, 1)
       } else {
-        queryFunction = EventService.getEventsByKeyword(this.keyword, 3, 1)
+        queryFunction = EventService.getEventByKeyword(this.keyword, 3, 1)
       }
 
       queryFunction
@@ -136,6 +150,8 @@ export default {
 #page-next {
   text-align: right;
 }
-</style>
 
-.search-box { width: 300px; }
+.search-box {
+  width: 300px;
+}
+</style>
