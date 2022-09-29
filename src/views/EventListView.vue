@@ -87,7 +87,6 @@ export default {
         parseInt(routeTo.query.page) || 1
       )
     }
-
     queryFunction
       .then((response) => {
         this.events = response.data // <---
